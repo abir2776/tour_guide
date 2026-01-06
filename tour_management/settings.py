@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "drf_yasg",
     "corsheaders",
+    "core"
 ]
 
 MIDDLEWARE = [
@@ -104,6 +105,8 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     "UPDATE_LAST_LOGIN": True,
 }
+
+AUTH_USER_MODEL = "core.User"
 
 
 # Password validation
