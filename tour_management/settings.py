@@ -33,7 +33,9 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "drf_yasg",
     "corsheaders",
-    "core"
+    "core",
+    "phonenumbers",
+    "tour_plan",
 ]
 
 MIDDLEWARE = [
