@@ -57,3 +57,13 @@ class User(AbstractUser):
     def get_name(self):
         name = " ".join([self.first_name, self.last_name])
         return name.strip()
+
+
+class GuestUser(models.Model):
+    full_name = models.CharField(max_length=255)
+    email = models.CharField(max_length=500)
+    country = models.CharField(max_length=255)
+    phone = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"Name: {self.full_name}, Phone: {self.phone}"

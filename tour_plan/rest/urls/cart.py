@@ -1,18 +1,15 @@
 from django.urls import path
+
 from tour_plan.rest.views.cart import (
     CartItemListCreateAPIView,
     CartItemRetrieveUpdateDestroyAPIView,
 )
 
 urlpatterns = [
+    path("", CartItemListCreateAPIView.as_view(), name="cart-item-list-create"),
     path(
-        '',
-        CartItemListCreateAPIView.as_view(),
-        name='cart-item-list-create'
-    ),
-    path(
-        '<int:pk>',
+        "<int:pk>",
         CartItemRetrieveUpdateDestroyAPIView.as_view(),
-        name='cart-item-detail'
+        name="cart-item-detail",
     ),
 ]

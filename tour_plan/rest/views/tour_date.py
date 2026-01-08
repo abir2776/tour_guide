@@ -1,13 +1,17 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from tour_plan.models import TourDate, TourPlan
-from tour_plan.rest.serializers.tour_date import (
-    TourDateSerializer,
-)
+from tour_plan.rest.serializers.tour_date import TourDateSerializer
 
 
 class TourDateListCreateAPIView(ListCreateAPIView):
     serializer_class = TourDateSerializer
+
+    def get_permissions(self):
+        if self.request.method == "POST":
+            return [IsAuthenticated()]
+        return [AllowAny()]
 
     def get_queryset(self):
         tour_id = self.kwargs.get("tour_id")
@@ -21,6 +25,12 @@ class TourDateListCreateAPIView(ListCreateAPIView):
 
 class TourDateRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = TourDateSerializer
+    lookup_field = "id"
+
+    def get_permissions(self):
+        if self.request.method in ["PUT", "PATCH", "DELETE"]:
+            return [IsAuthenticated()]
+        return [AllowAny()]
 
     def get_queryset(self):
         tour_id = self.kwargs.get("tour_id")

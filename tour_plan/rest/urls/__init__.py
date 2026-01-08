@@ -7,4 +7,5 @@ urlpatterns = [
     path("location/", include("tour_plan.rest.urls.location")),
     path("cart/", include("tour_plan.rest.urls.cart")),
     path("booking/", include("tour_plan.rest.urls.booking")),
+    path("image/", include("tour_plan.rest.urls.image")),
 ]
