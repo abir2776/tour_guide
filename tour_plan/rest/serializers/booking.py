@@ -25,7 +25,7 @@ class BookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
         fields = "__all__"
-        read_only_fields = "__all__"
+        read_only_fields = []
 
     def get_items(self, object):
         items = BookingItem.objects.filter(booking=object)
@@ -36,7 +36,7 @@ class BookingSerializer(serializers.ModelSerializer):
             user_type = "guest"
             if self.context["request"].user:
                 user_type="user"
-                
+
             traveler_details = validated_data.pop("traveler_details")
             if user_type == "user":
                 user = self.context["request"].user
