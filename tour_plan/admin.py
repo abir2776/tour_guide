@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Location, TourPlan, TourDate, TimeSlot, CartItem, Booking, BookingItem
+from .models import Location, TourPlan, TourDate, TimeSlot, CartItem, Booking, BookingItem,Image
 
 
 @admin.register(Location)
@@ -94,3 +94,5 @@ class BookingItemAdmin(admin.ModelAdmin):
     list_filter = ['created_at', 'tour_plan']
     search_fields = ['booking__user__username', 'tour_plan__title']
     readonly_fields = ['created_at']
+
+admin.site.register(Image)

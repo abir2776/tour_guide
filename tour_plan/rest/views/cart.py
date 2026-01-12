@@ -24,7 +24,6 @@ class CartItemListCreateAPIView(ListCreateAPIView):
 
 class CartItemRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = CartItemSerializer
-    lookup_field = "id"
 
     def get_permissions(self):
         if self.request.method in ["PUT", "PATCH", "DELETE"]:

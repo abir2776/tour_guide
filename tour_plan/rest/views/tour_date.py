@@ -25,7 +25,6 @@ class TourDateListCreateAPIView(ListCreateAPIView):
 
 class TourDateRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = TourDateSerializer
-    lookup_field = "id"
 
     def get_permissions(self):
         if self.request.method in ["PUT", "PATCH", "DELETE"]:

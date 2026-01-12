@@ -52,7 +52,7 @@ class User(AbstractUser):
         ordering = ("-date_joined",)
 
     def __str__(self):
-        return f"UID: {self.uid}, Phone: {self.phone}"
+        return f"UID: {self.first_name}, Phone: {self.phone}"
 
     def get_name(self):
         name = " ".join([self.first_name, self.last_name])

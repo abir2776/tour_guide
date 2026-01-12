@@ -18,7 +18,6 @@ class TourPlanListCreateAPIView(ListCreateAPIView):
 class TourPlanRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = TourPlanSerializer
     queryset = TourPlan.objects.all()
-    lookup_field = "id"
 
     def get_permissions(self):
         if self.request.method in ["PUT", "PATCH", "DELETE"]:

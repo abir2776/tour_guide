@@ -23,7 +23,7 @@ class Location(models.Model):
 
 
 class Image(models.Model):
-    file = models.FileField()
+    file = models.FileField(upload_to="tour_plan")
     status = models.CharField(
         max_length=20,
         choices=Status.choices,
