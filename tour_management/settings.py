@@ -155,3 +155,7 @@ MEDIA_URL = "/media/"
 ALLOWED_HOSTS = ["*"]
 CORS_ALLOW_ALL_ORIGINS = True
 APPEND_SLASH = False
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://api.cityrometickets.com",
+]
