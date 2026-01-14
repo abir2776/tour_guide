@@ -16,7 +16,9 @@ class BookingItemSerializer(serializers.ModelSerializer):
 
 class BookingSerializer(serializers.ModelSerializer):
     items = serializers.SerializerMethodField()
-    cart_item_ids = serializers.ListField(child=serializers.IntegerField())
+    cart_item_ids = serializers.ListField(
+        child=serializers.IntegerField(), write_only=True, required=False
+    )
     full_name = serializers.CharField(write_only=True, required=False)
     email = serializers.CharField(write_only=True, required=False)
     country = serializers.CharField(write_only=True, required=False)
@@ -32,10 +34,10 @@ class BookingSerializer(serializers.ModelSerializer):
         return BookingItemSerializer(items, many=True).data
 
     def create(self, validated_data):
-        with transaction.atomic:
+        with transaction.atomic():
             user_type = "guest"
-            if self.context["request"].user:
-                user_type="user"
+            if self.context["request"].user.is_authenticated:
+                user_type = "user"
 
             traveler_details = validated_data.pop("traveler_details")
             if user_type == "user":
@@ -77,6 +79,7 @@ class BookingSerializer(serializers.ModelSerializer):
                 )
 
             BookingItem.objects.bulk_create(order_items_to_create)
+            cartitems.delete()
             booking.total_price = total_price
             booking.save()
             return booking

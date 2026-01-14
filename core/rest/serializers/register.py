@@ -44,8 +44,4 @@ class PublicUserRegistrationSerializer(serializers.Serializer):
         user.set_password(password)
         user.save()
         logger.debug(f"Created new user: {user}")
-
-        org_name = validated_data["org_name"]
-        if len(org_name) == 0:
-            org_name = f"{first_name} {last_name}"
         return user
