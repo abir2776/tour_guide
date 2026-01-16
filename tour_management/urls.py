@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path, re_path
 from drf_yasg import openapi
@@ -56,3 +58,4 @@ urlpatterns = [
     path("api/v1/auth/", include("core.rest.urls")),
     path("api/v1/tour/", include("tour_plan.rest.urls")),
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
