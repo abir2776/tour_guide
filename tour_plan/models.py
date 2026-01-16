@@ -143,7 +143,7 @@ class CartItem(models.Model):
         unique_together = ("user", "tour_plan", "time_slot")
 
     def __str__(self):
-        return f"Cart Item - {self.user.username} - {self.tour_plan.title}"
+        return f"Cart Item- {self.tour_plan.title}"
 
     def calculate_item_price(self):
         total = (
@@ -208,7 +208,7 @@ class Booking(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Booking #{self.id} - {self.user.username}"
+        return f"Booking #{self.id}"
 
 
 class BookingItem(models.Model):
