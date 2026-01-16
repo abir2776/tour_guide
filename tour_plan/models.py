@@ -226,8 +226,22 @@ class BookingItem(models.Model):
     num_infants = models.PositiveIntegerField(default=0)
     num_youth = models.PositiveIntegerField(default=0)
     num_student_eu = models.PositiveIntegerField(default=0)
-    item_price = models.DecimalField(max_digits=10, decimal_places=2)
+    item_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Booking Item - {self.booking.id} - {self.tour_plan.title}"
+
+    def calculate_item_price(self):
+        return (
+            self.num_adults * self.tour_plan.price_adult
+            + self.num_children * self.tour_plan.price_child
+            + self.num_infants * self.tour_plan.price_infant
+            + self.num_youth * self.tour_plan.price_youth
+            + self.num_student_eu * self.tour_plan.price_student_eu
+        )
+
+    def save(self, *args, **kwargs):
+        if not self.item_price:
+            self.item_price = self.calculate_item_price()
+        super().save(*args, **kwargs)
