@@ -56,7 +56,6 @@ class BookingSerializer(serializers.ModelSerializer):
                 email = validated_data.pop("email")
                 country = validated_data.pop("country")
                 phone = validated_data.pop("phone")
-                cart_item_ids = validated_data.pop("cart_item_ids")
                 guest_user = GuestUser.objects.create(
                     full_name=full_name, email=email, country=country, phone=phone
                 )
@@ -66,6 +65,7 @@ class BookingSerializer(serializers.ModelSerializer):
                     traveler_details=traveler_details,
                 )
                 if not is_book_now:
+                    cart_item_ids = validated_data.pop("cart_item_ids")
                     cartitems = CartItem.objects.filter(id__in=cart_item_ids)
 
             if not is_book_now:
