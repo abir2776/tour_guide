@@ -40,9 +40,7 @@ class CartItemRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = CartItemSerializer
 
     def get_permissions(self):
-        if self.request.method in ["PUT", "PATCH", "DELETE"]:
-            return [AllowAny()]
-        return [IsAuthenticated()]
+        return [AllowAny()]
 
     def get_queryset(self):
         return CartItem.objects.filter(user=self.request.user)
