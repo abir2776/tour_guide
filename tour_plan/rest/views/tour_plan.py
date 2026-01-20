@@ -39,4 +39,4 @@ class RecomandedTourPlanListCreateAPIView(ListAPIView):
 
     def get_queryset(self):
         tour_id = self.kwargs.get("tour_id")
-        return TourPlan.objects.filter().exclude(tour_id=tour_id)
+        return TourPlan.objects.filter().exclude(id=tour_id)
