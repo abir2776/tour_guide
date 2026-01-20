@@ -38,6 +38,6 @@ class CartItemListCreateAPIView(ListCreateAPIView):
 
 class CartItemRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = CartItemSerializer
-
+    queryset = CartItem.objects.filter()
     def get_permissions(self):
         return [AllowAny()]
