@@ -168,8 +168,7 @@ class CartItem(models.Model):
             )
 
     def save(self, *args, **kwargs):
-        if not self.item_price:
-            self.item_price = self.calculate_item_price()
+        self.item_price = self.calculate_item_price()
         super().save(*args, **kwargs)
 
 
