@@ -1,6 +1,6 @@
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny
 
 from tour_plan.models import CartItem
 from tour_plan.rest.serializers.cart import CartItemSerializer
@@ -41,6 +41,3 @@ class CartItemRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
     def get_permissions(self):
         return [AllowAny()]
-
-    def get_queryset(self):
-        return CartItem.objects.filter(user=self.request.user)
