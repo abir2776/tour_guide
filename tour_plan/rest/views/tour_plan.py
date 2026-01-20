@@ -1,3 +1,4 @@
+from rest_framework import filters
 from rest_framework.generics import (
     ListAPIView,
     ListCreateAPIView,
@@ -12,6 +13,12 @@ from tour_plan.rest.serializers.tour_plan import TourPlanSerializer
 class TourPlanListCreateAPIView(ListCreateAPIView):
     serializer_class = TourPlanSerializer
     queryset = TourPlan.objects.all()
+    filter_backends = [filters.SearchFilter]
+    search_fields = [
+        "title",
+        "description",
+        "location",
+    ]
 
     def get_permissions(self):
         if self.request.method == "POST":
@@ -39,4 +46,4 @@ class RecomandedTourPlanListCreateAPIView(ListAPIView):
 
     def get_queryset(self):
         tour_id = self.kwargs.get("tour_id")
-        return TourPlan.objects.filter().exclude(id=tour_id)
+        return TourPlan.objects.exclude(id=tour_id).order_by("-id")[:8]
