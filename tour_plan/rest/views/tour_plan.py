@@ -24,8 +24,6 @@ class TourPlanRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = TourPlan.objects.all()
 
     def get_permissions(self):
-        if self.request.method in ["PUT", "PATCH", "DELETE"]:
-            return [IsAuthenticated()]
         return [AllowAny()]
 
 
