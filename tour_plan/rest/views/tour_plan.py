@@ -17,7 +17,7 @@ class TourPlanListCreateAPIView(ListCreateAPIView):
     search_fields = [
         "title",
         "description",
-        "location",
+        "locations__name",
     ]
 
     def get_permissions(self):
