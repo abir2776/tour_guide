@@ -1,3 +1,4 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework.generics import (
     ListAPIView,
@@ -7,13 +8,21 @@ from rest_framework.generics import (
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from tour_plan.models import TourPlan
+from tour_plan.rest.filters.tour_plan import TourPlanFilter
 from tour_plan.rest.serializers.tour_plan import TourPlanSerializer
 
 
 class TourPlanListCreateAPIView(ListCreateAPIView):
     serializer_class = TourPlanSerializer
     queryset = TourPlan.objects.all()
-    filter_backends = [filters.SearchFilter]
+
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+    ]
+
+    filterset_class = TourPlanFilter
+
     search_fields = [
         "title",
         "description",

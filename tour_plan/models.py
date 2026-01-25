@@ -41,31 +41,50 @@ class TourPlan(models.Model):
     price_adult = models.DecimalField(max_digits=10, decimal_places=2)
     adult_age_min = models.PositiveIntegerField(default=18)
     adult_age_max = models.PositiveIntegerField(default=99)
+
     max_children = models.PositiveIntegerField(default=0)
     price_child = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     child_age_min = models.PositiveIntegerField(default=3)
     child_age_max = models.PositiveIntegerField(default=17)
+
     max_infants = models.PositiveIntegerField(default=0)
     price_infant = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     infant_age_min = models.PositiveIntegerField(default=0)
     infant_age_max = models.PositiveIntegerField(default=2)
+
     max_youth = models.PositiveIntegerField(default=0)
     price_youth = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     youth_age_min = models.PositiveIntegerField(default=18)
     youth_age_max = models.PositiveIntegerField(default=25)
+
     max_student_eu = models.PositiveIntegerField(default=0)
     price_student_eu = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     student_eu_age_min = models.PositiveIntegerField(default=18)
     student_eu_age_max = models.PositiveIntegerField(default=30)
+    free_cancellation = models.BooleanField(default=True)
+    pickup_included = models.BooleanField(default=True)
 
+    highlights = models.JSONField(default=list, blank=True, null=True)
+    full_description = models.TextField(blank=True, null=True)
+
+    includes = models.JSONField(default=list, blank=True, null=True)
+    excludes = models.JSONField(default=list, blank=True, null=True)
+
+    not_suitable_for = models.JSONField(default=list, blank=True, null=True)
+    not_allowed = models.JSONField(default=list, blank=True, null=True)
+    know_before_you_go = models.JSONField(default=list, blank=True, null=True)
+
+    duration_days = models.PositiveIntegerField(null=True, blank=True)
     locations = models.ManyToManyField(Location, related_name="tour_plans", blank=True)
     images = models.ManyToManyField(Image, related_name="images_tour", blank=True)
+
     status = models.CharField(
         max_length=20,
         choices=Status.choices,
         default=Status.ACTIVE,
     )
     is_active = models.BooleanField(default=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "phonenumbers",
     "tour_plan",
     "rest_framework",
+    "django_filters",
 ]
 
 MIDDLEWARE = [
@@ -99,6 +100,10 @@ REST_FRAMEWORK = {
         "user": "120/minute",
         "single_api": "20/day",
     },
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.SearchFilter",
+    ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 20,
 }
