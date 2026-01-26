@@ -55,7 +55,7 @@ class BookingSerializer(serializers.ModelSerializer):
                 full_name = validated_data.pop("full_name")
                 email = validated_data.pop("email")
                 country = validated_data.pop("country")
-                phone = validated_data.pop("phone")
+                phone = validated_data.pop("phone", None)
                 guest_user = GuestUser.objects.create(
                     full_name=full_name, email=email, country=country, phone=phone
                 )

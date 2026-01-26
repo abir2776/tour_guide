@@ -63,7 +63,7 @@ class GuestUser(models.Model):
     full_name = models.CharField(max_length=255)
     email = models.CharField(max_length=500)
     country = models.CharField(max_length=255)
-    phone = models.CharField(max_length=255)
+    phone = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return f"Name: {self.full_name}, Phone: {self.phone}"
