@@ -274,3 +274,12 @@ class Notice(models.Model):
         if self.is_active:
             Notice.objects.filter().exclude(id=self.id).update(is_active=False)
         super().save(*args, **kwargs)
+
+
+class Contact(models.Model):
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    email = models.CharField(max_length=255)
+    phone = models.CharField(max_length=255, null=True, blank=True)
+    subject = models.CharField(max_length=255)
+    message = models.TextField()
