@@ -263,3 +263,14 @@ class BookingItem(models.Model):
         if not self.item_price:
             self.item_price = self.calculate_item_price()
         super().save(*args, **kwargs)
+
+
+class Notice(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    is_active = models.BooleanField(default=True)
+
+    def save(self, *args, **kwargs):
+        if self.is_active:
+            Notice.objects.filter().exclude(id=self.id).update(is_active=False)
+        super().save(*args, **kwargs)
