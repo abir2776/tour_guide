@@ -42,6 +42,7 @@ class User(AbstractUser):
         choices=UserRole.choices,
         default=UserRole.CUSTOMER,
     )
+    dob = models.DateField(null=True,blank=True)
 
     objects = CustomUserManager()
 

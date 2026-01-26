@@ -3,7 +3,7 @@ import decimal
 from django.db import transaction
 from rest_framework import serializers
 
-from core.models import GuestUser
+from core.models import GuestUser,User
 from tour_plan.models import Booking, BookingItem, CartItem
 
 
@@ -56,14 +56,22 @@ class BookingSerializer(serializers.ModelSerializer):
                 email = validated_data.pop("email")
                 country = validated_data.pop("country")
                 phone = validated_data.pop("phone", None)
-                guest_user = GuestUser.objects.create(
-                    full_name=full_name, email=email, country=country, phone=phone
-                )
-                booking = Booking.objects.create(
-                    guest_user=guest_user,
-                    user_type="guest",
-                    traveler_details=traveler_details,
-                )
+                user = User.objects.filter(email=email)
+                if not user.exists():
+                    guest_user = GuestUser.objects.create(
+                        full_name=full_name, email=email, country=country, phone=phone
+                    )
+                    booking = Booking.objects.create(
+                        guest_user=guest_user,
+                        user_type="guest",
+                        traveler_details=traveler_details,
+                    )
+                else:
+                    booking = Booking.objects.create(
+                        user=user,
+                        user_type="user",
+                        traveler_details=traveler_details,
+                    )
                 if not is_book_now:
                     cart_item_ids = validated_data.pop("cart_item_ids")
                     cartitems = CartItem.objects.filter(id__in=cart_item_ids)

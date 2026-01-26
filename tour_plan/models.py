@@ -193,9 +193,10 @@ class CartItem(models.Model):
 
 class Booking(models.Model):
     STATUS_CHOICES = [
-        ("confirmed", "Confirmed"),
+        ("open", "Open"),
+        ("in_review", "In Review"),
         ("cancelled", "Cancelled"),
-        ("pending", "Pending"),
+        ("completed", "Completed"),
     ]
 
     user_type = models.CharField(
@@ -220,7 +221,7 @@ class Booking(models.Model):
         max_digits=10, decimal_places=2, default=decimal.Decimal(0)
     )
     traveler_details = models.JSONField(default=[])
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="open")
     booked_by_admin = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
