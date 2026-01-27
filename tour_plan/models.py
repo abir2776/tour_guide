@@ -222,6 +222,7 @@ class Booking(models.Model):
     )
     traveler_details = models.JSONField(default=[])
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="open")
+    cancelled_reason = models.TextField(null=True, blank=True)
     booked_by_admin = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

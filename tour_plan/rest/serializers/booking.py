@@ -11,7 +11,6 @@ class BookingItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookingItem
         fields = "__all__"
-        read_only_fields = ("booking", "item_price")
 
 
 class BookingSerializer(serializers.ModelSerializer):
@@ -34,6 +33,17 @@ class BookingSerializer(serializers.ModelSerializer):
     def get_items(self, object):
         items = BookingItem.objects.filter(booking=object)
         return BookingItemSerializer(items, many=True).data
+    
+    def validate(self, attrs):
+        status = attrs.get("status")
+        cancelled_reason = attrs.get("cancelled_reason")
+
+        if status == "cancelled" and (not cancelled_reason or len(cancelled_reason)<=0):
+            raise serializers.ValidationError({
+                "cancelled_reason": "Cancelled reason is required when status is cancelled."
+            })
+
+        return attrs
 
     def create(self, validated_data):
         with transaction.atomic():
