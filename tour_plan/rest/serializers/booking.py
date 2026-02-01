@@ -55,6 +55,7 @@ class BookingSerializer(serializers.ModelSerializer):
                 user_type = "user"
 
             traveler_details = validated_data.pop("traveler_details")
+            print("EEEEEEEEEEEEE",user_type)
             if user_type == "user":
                 user = self.context["request"].user
                 booking = Booking.objects.create(
