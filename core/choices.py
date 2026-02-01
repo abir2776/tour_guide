@@ -20,3 +20,4 @@ class Status(models.TextChoices):
 class UserRole(models.TextChoices):
     ADMIN = "ADMIN", "Admin"
     CUSTOMER = "CUSTOMER", "Customer"
+    SUPER_ADMIN = "SUPER_ADMIN", "Super Admin"
