@@ -29,7 +29,7 @@ class BookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
         fields = "__all__"
-        read_only_fields = []
+        read_only_fields = ["id","user","total_price"]
 
     def get_items(self, object):
         items = BookingItem.objects.filter(booking=object)
