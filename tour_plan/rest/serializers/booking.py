@@ -55,7 +55,6 @@ class BookingSerializer(serializers.ModelSerializer):
                 user_type = "user"
 
             traveler_details = validated_data.pop("traveler_details")
-            print("EEEEEEEEEEEEE",user_type)
             if user_type == "user":
                 user = self.context["request"].user
                 booking = Booking.objects.create(
@@ -80,7 +79,7 @@ class BookingSerializer(serializers.ModelSerializer):
                     )
                 else:
                     booking = Booking.objects.create(
-                        user=user,
+                        user=user.first(),
                         user_type="user",
                         traveler_details=traveler_details,
                     )
