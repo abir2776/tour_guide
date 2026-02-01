@@ -10,6 +10,7 @@ from .models import (
     TimeSlot,
     TourDate,
     TourPlan,
+    Contact
 )
 
 
@@ -159,3 +160,4 @@ class BookingItemAdmin(admin.ModelAdmin):
 
 admin.site.register(Image)
 admin.site.register(Notice)
+admin.site.register(Contact)
