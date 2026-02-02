@@ -1,13 +1,19 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from tour_plan.models import Booking, BookingItem
 from tour_plan.permissions import IsAdmin
+from tour_plan.rest.filters.bookings import BookingFilter
 from tour_plan.rest.serializers.booking import BookingItemSerializer, BookingSerializer
 
 
 class BookingListCreateAPIView(ListCreateAPIView):
     serializer_class = BookingSerializer
+    filter_backends = [
+        DjangoFilterBackend,
+    ]
+    filterset_class = BookingFilter
 
     def get_permissions(self):
         if self.request.method == "POST":

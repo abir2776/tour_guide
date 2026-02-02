@@ -10,4 +10,5 @@ urlpatterns = [
     path("image/", include("tour_plan.rest.urls.image")),
     path("notice/", include("tour_plan.rest.urls.notice")),
     path("contacts/", include("tour_plan.rest.urls.contacts")),
+    path("dashboard/", include("tour_plan.rest.urls.dashboard")),
 ]

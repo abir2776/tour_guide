@@ -195,6 +195,7 @@ class Booking(models.Model):
     STATUS_CHOICES = [
         ("open", "Open"),
         ("in_review", "In Review"),
+        ("accepted", "Accepted"),
         ("cancelled", "Cancelled"),
         ("completed", "Completed"),
     ]
@@ -279,9 +280,17 @@ class Notice(models.Model):
 
 
 class Contact(models.Model):
+    STATUS_CHOICES = [
+        ("open", "Open"),
+        ("in_review", "In Review"),
+        ("cancelled", "Cancelled"),
+        ("completed", "Completed"),
+    ]
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
     phone = models.CharField(max_length=255, null=True, blank=True)
     subject = models.CharField(max_length=255)
     message = models.TextField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="open")
+    cancelled_reason = models.TextField(null=True, blank=True)
