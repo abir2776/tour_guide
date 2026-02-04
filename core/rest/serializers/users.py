@@ -6,7 +6,7 @@ from core.models import User
 class UserSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField()
     last_name = serializers.CharField()
-    eamil = serializers.CharField()
+    email = serializers.CharField()
     phone = serializers.CharField(required=False)
     password = serializers.CharField()
 
