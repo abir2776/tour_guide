@@ -59,5 +59,6 @@ urlpatterns = [
     path("api/v1/tour/", include("tour_plan.rest.urls")),
     path("api/v1/admin/customers/", include("core.rest.urls.customers")),
     path("api/v1/me/", include("core.rest.urls.me")),
+    path("api/v1/admin/token/", include("core.rest.urls.admin_token")),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
