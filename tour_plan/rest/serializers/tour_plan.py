@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from tour_plan.models import TourPlan
+from tour_plan.models import Image, TourPlan
 from tour_plan.rest.serializers.image import ImageSerializer
 from tour_plan.rest.serializers.location import LocationSerializer
 
@@ -8,6 +8,9 @@ from tour_plan.rest.serializers.location import LocationSerializer
 class TourPlanSerializer(serializers.ModelSerializer):
     locations = LocationSerializer(many=True, read_only=True)
     images = ImageSerializer(many=True, read_only=True)
+    image_ids = serializers.PrimaryKeyRelatedField(
+        queryset=Image.objects.all(), many=True, write_only=True, source="images"
+    )
 
     class Meta:
         model = TourPlan
