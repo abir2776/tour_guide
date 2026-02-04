@@ -12,3 +12,4 @@ class ImageListCreateView(ListCreateAPIView):
 class ImageDetailsView(RetrieveUpdateDestroyAPIView):
     serializer_class = ImageSerializer
     queryset = Image.objects.filter()
+    lookup_field = "id"
