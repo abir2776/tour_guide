@@ -6,7 +6,7 @@ class TimeSlotSerializer(serializers.ModelSerializer):
     class Meta:
         model = TimeSlot
         fields = "__all__"
-        read_only_fields = ("tour_date",)
+        read_only_fields = ("tour_date","end_time")
 
     def validate(self, attrs):
         view = self.context.get("view")
