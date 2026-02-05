@@ -271,7 +271,7 @@ class BookingItem(models.Model):
 class Notice(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         if self.is_active:

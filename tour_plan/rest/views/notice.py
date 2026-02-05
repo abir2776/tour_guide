@@ -8,7 +8,7 @@ from tour_plan.rest.serializers.notice import NoticeSerializer
 
 class NoticeListCreateAPIView(ListCreateAPIView):
     serializer_class = NoticeSerializer
-    queryset = Notice.objects.filter(is_active=True)
+    queryset = Notice.objects.filter()
 
     def get_permissions(self):
         if self.request.method == "POST":
