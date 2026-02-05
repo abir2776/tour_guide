@@ -113,7 +113,7 @@ class TimeSlot(models.Model):
         TourDate, on_delete=models.CASCADE, related_name="time_slots"
     )
     start_time = models.TimeField()
-    end_time = models.TimeField()
+    end_time = models.TimeField(null=True, blank=True)
     available_adults = models.PositiveIntegerField()
     available_children = models.PositiveIntegerField()
     available_infants = models.PositiveIntegerField()
