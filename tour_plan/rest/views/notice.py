@@ -1,4 +1,4 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from tour_plan.models import Notice
@@ -16,9 +16,10 @@ class NoticeListCreateAPIView(ListCreateAPIView):
         return [AllowAny()]
 
 
-class NoticeDetailAPIView(RetrieveUpdateAPIView):
+class NoticeDetailAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = NoticeSerializer
     queryset = Notice.objects.all()
+    lookup_field = "id"
 
     def get_permissions(self):
         if self.request.method in ["PUT", "PATCH"]:
