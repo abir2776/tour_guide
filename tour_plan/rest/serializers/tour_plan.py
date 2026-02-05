@@ -12,7 +12,7 @@ class TourPlanSerializer(serializers.ModelSerializer):
         queryset=Image.objects.all(), many=True, write_only=True, source="images"
     )
     location_ids = serializers.PrimaryKeyRelatedField(
-        queryset=Location.objects.all(), many=True, write_only=True, source="images"
+        queryset=Location.objects.all(), many=True, write_only=True, source="locations"
     )
 
     class Meta:
