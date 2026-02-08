@@ -3,15 +3,18 @@ import decimal
 from django.db import transaction
 from rest_framework import serializers
 
-from core.models import GuestUser,User
+from core.models import GuestUser, User
 from tour_plan.models import Booking, BookingItem, CartItem
+from tour_plan.rest.serializers.tour_time import TimeSlotSerializer
 
 
 class BookingItemSerializer(serializers.ModelSerializer):
+    time_slot = TimeSlotSerializer(read_only=True)
+
     class Meta:
         model = BookingItem
         fields = "__all__"
-        read_only_fields = ["id","booking"]
+        read_only_fields = ["id", "booking"]
 
 
 class BookingSerializer(serializers.ModelSerializer):
@@ -29,20 +32,24 @@ class BookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
         fields = "__all__"
-        read_only_fields = ["id","user","total_price"]
+        read_only_fields = ["id", "user", "total_price"]
 
     def get_items(self, object):
         items = BookingItem.objects.filter(booking=object)
         return BookingItemSerializer(items, many=True).data
-    
+
     def validate(self, attrs):
         status = attrs.get("status")
         cancelled_reason = attrs.get("cancelled_reason")
 
-        if status == "cancelled" and (not cancelled_reason or len(cancelled_reason)<=0):
-            raise serializers.ValidationError({
-                "cancelled_reason": "Cancelled reason is required when status is cancelled."
-            })
+        if status == "cancelled" and (
+            not cancelled_reason or len(cancelled_reason) <= 0
+        ):
+            raise serializers.ValidationError(
+                {
+                    "cancelled_reason": "Cancelled reason is required when status is cancelled."
+                }
+            )
 
         return attrs
 
