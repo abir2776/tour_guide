@@ -21,6 +21,9 @@ class BookingListCreateAPIView(ListCreateAPIView):
         return [IsAuthenticated()]
 
     def get_queryset(self):
+        user_role = self.request.user.role
+        if user_role in ["ADMIN","SUPER_ADMIN"]:
+            return Booking.objects.filter()
         return Booking.objects.filter(user=self.request.user)
 
 
@@ -34,6 +37,9 @@ class BookingRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         return [IsAuthenticated()]
 
     def get_queryset(self):
+        user_role = self.request.user.role
+        if user_role in ["ADMIN","SUPER_ADMIN"]:
+            return Booking.objects.filter()
         return Booking.objects.filter(user=self.request.user)
 
 
