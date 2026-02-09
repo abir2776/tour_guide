@@ -64,9 +64,38 @@ class BookingSerializer(serializers.ModelSerializer):
             traveler_details = validated_data.pop("traveler_details")
             if user_type == "user":
                 user = self.context["request"].user
-                booking = Booking.objects.create(
-                    user=user, user_type=user_type, traveler_details=traveler_details
-                )
+                if user.role in ["ADMIN", "SUPER_ADMIN"]:
+                    full_name = validated_data.pop("full_name")
+                    email = validated_data.pop("email")
+                    country = validated_data.pop("country")
+                    phone = validated_data.pop("phone", None)
+                    user = User.objects.filter(email=email)
+                    if not user.exists():
+                        guest_user = GuestUser.objects.create(
+                            full_name=full_name,
+                            email=email,
+                            country=country,
+                            phone=phone,
+                        )
+                        booking = Booking.objects.create(
+                            guest_user=guest_user,
+                            user_type="guest",
+                            traveler_details=traveler_details,
+                            booked_by_admin=True,
+                        )
+                    else:
+                        booking = Booking.objects.create(
+                            user=user.first(),
+                            user_type="user",
+                            traveler_details=traveler_details,
+                            booked_by_admin=True,
+                        )
+                else:
+                    booking = Booking.objects.create(
+                        user=user,
+                        user_type=user_type,
+                        traveler_details=traveler_details,
+                    )
                 if not is_book_now:
                     cartitems = CartItem.objects.filter(user=user)
             else:
