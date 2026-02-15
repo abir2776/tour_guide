@@ -53,4 +53,4 @@ class BookingItemDetails(RetrieveUpdateDestroyAPIView):
     serializer_class = BookingItemSerializer
     permission_classes = [IsAdmin]
     lookup_field = "id"
-    queryset = Booking.objects.filter()
+    queryset = BookingItem.objects.filter()
