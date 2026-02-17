@@ -9,7 +9,7 @@ from core.rest.serializers.users import UserSerializer
 class UserListCreateApiView(ListCreateAPIView):
     serializer_class = UserSerializer
     permission_classes = [IsSuperUser]
-    queryset = User.objects.filter(role=UserRole.SUPER_ADMIN)
+    queryset = User.objects.filter(role=UserRole.ADMIN)
 
 
 class UserDetailsApiVew(RetrieveUpdateDestroyAPIView):
