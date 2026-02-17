@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "email", "phone", "password","role"]
+        fields = ["id", "first_name", "last_name", "email", "phone", "password", "role"]
 
     def validate_email(self, data):
         email = data.lower()
@@ -48,7 +48,7 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
     def update(self, instance, validated_data):
-        password = validated_data.pop("password",None)
+        password = validated_data.pop("password", None)
         if password:
             instance.set_password(password)
             instance.save()
