@@ -17,6 +17,13 @@ class BookingItemSerializer(serializers.ModelSerializer):
         read_only_fields = ["id", "booking"]
 
 
+class BookingItemCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BookingItem
+        fields = "__all__"
+        read_only_fields = ["id", "booking"]
+
+
 class BookingSerializer(serializers.ModelSerializer):
     items = serializers.SerializerMethodField()
     cart_item_ids = serializers.ListField(
@@ -27,7 +34,7 @@ class BookingSerializer(serializers.ModelSerializer):
     country = serializers.CharField(write_only=True, required=False)
     phone = serializers.CharField(write_only=True, required=False, allow_blank=True)
     book_now = serializers.BooleanField(write_only=True, required=False)
-    single_item = BookingItemSerializer(write_only=True, required=False)
+    single_item = BookingItemCreateSerializer(write_only=True, required=False)
 
     class Meta:
         model = Booking
@@ -58,8 +65,6 @@ class BookingSerializer(serializers.ModelSerializer):
             user_type = "guest"
             is_book_now = validated_data.pop("book_now", None)
             single_item = validated_data.pop("single_item", None)
-            single_item_time_slot_id = single_item.pop("time_slot_id")
-            print("QQQQQQQQQQQQQQQQQQ", single_item_time_slot_id)
             if self.context["request"].user.is_authenticated:
                 user_type = "user"
 
@@ -150,9 +155,7 @@ class BookingSerializer(serializers.ModelSerializer):
                 booking.save()
             else:
                 booking_item = BookingItem.objects.create(
-                    booking=booking,
-                    time_slot_id=single_item_time_slot_id,
-                    **single_item,
+                    booking=booking, **single_item
                 )
                 booking.total_price = booking_item.item_price
                 booking.save()
