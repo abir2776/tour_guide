@@ -58,6 +58,8 @@ class BookingSerializer(serializers.ModelSerializer):
             user_type = "guest"
             is_book_now = validated_data.pop("book_now", None)
             single_item = validated_data.pop("single_item", None)
+            single_item_time_slot_id = single_item.pop("time_slot_id")
+            print("QQQQQQQQQQQQQQQQQQ", single_item_time_slot_id)
             if self.context["request"].user.is_authenticated:
                 user_type = "user"
 
@@ -148,7 +150,9 @@ class BookingSerializer(serializers.ModelSerializer):
                 booking.save()
             else:
                 booking_item = BookingItem.objects.create(
-                    booking=booking, **single_item
+                    booking=booking,
+                    time_slot_id=single_item_time_slot_id,
+                    **single_item,
                 )
                 booking.total_price = booking_item.item_price
                 booking.save()
