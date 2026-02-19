@@ -37,8 +37,8 @@ class Image(models.Model):
 class TourPlan(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    max_adults = models.PositiveIntegerField(validators=[MinValueValidator(1)])
-    price_adult = models.DecimalField(max_digits=10, decimal_places=2)
+    max_adults = models.PositiveIntegerField(validators=[MinValueValidator(1)],default=0)
+    price_adult = models.DecimalField(max_digits=10, decimal_places=2,default=0)
     adult_age_min = models.PositiveIntegerField(default=18)
     adult_age_max = models.PositiveIntegerField(default=99)
 
@@ -169,6 +169,8 @@ class CartItem(models.Model):
             self.num_adults * self.tour_plan.price_adult
             + self.num_children * self.tour_plan.price_child
             + self.num_infants * self.tour_plan.price_infant
+            + self.num_youth * self.tour_plan.price_youth
+            + self.num_student_eu * self.tour_plan.price_student_eu
         )
         return total
 
@@ -263,8 +265,17 @@ class BookingItem(models.Model):
         )
 
     def save(self, *args, **kwargs):
-        if not self.item_price:
-            self.item_price = self.calculate_item_price()
+        updated_price = self.calculate_item_price()
+        if updated_price != self.item_price:
+            self.item_price = updated_price
+            if self.item_price > updated_price:
+                self.booking.total_price = self.booking.total_price - (
+                    self.item_price - updated_price
+                )
+            else:
+                self.booking.total_price = self.booking.total_price + (
+                    updated_price - self.item_price
+                )
         super().save(*args, **kwargs)
 
 

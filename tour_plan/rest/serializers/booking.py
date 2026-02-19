@@ -148,6 +148,12 @@ class BookingSerializer(serializers.ModelSerializer):
                             item_price=item.item_price,
                         )
                     )
+                    item.time_slot.available_adults -= item.num_adults
+                    item.time_slot.available_children -= item.num_children
+                    item.time_slot.available_infants -= item.num_infants
+                    item.time_slot.available_student_eu -= item.num_student_eu
+                    item.time_slot.available_youth -= item.num_youth
+                    item.time_slot.save()
 
                 BookingItem.objects.bulk_create(order_items_to_create)
                 cartitems.delete()
@@ -159,5 +165,11 @@ class BookingSerializer(serializers.ModelSerializer):
                 )
                 booking.total_price = booking_item.item_price
                 booking.save()
+                booking.time_slot.available_adults -= item.num_adults
+                booking.time_slot.available_children -= item.num_children
+                booking.time_slot.available_infants -= item.num_infants
+                booking.time_slot.available_student_eu -= item.num_student_eu
+                booking.time_slot.available_youth -= item.num_youth
+                booking.time_slot.save()
 
             return booking
