@@ -129,7 +129,7 @@ class BookingAdmin(admin.ModelAdmin):
     ]
     list_filter = ["status", "booked_by_admin", "created_at"]
     search_fields = ["user__username", "user__email"]
-    readonly_fields = ["total_price", "created_at", "updated_at"]
+    readonly_fields = ["created_at", "updated_at"]
     inlines = [BookingItemInline]
 
     fieldsets = (

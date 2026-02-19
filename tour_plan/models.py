@@ -276,6 +276,7 @@ class BookingItem(models.Model):
                 self.booking.total_price = self.booking.total_price + (
                     updated_price - self.item_price
                 )
+            self.booking.save()
         super().save(*args, **kwargs)
 
 
