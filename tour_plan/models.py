@@ -272,11 +272,14 @@ class BookingItem(models.Model):
                 self.booking.total_price = self.booking.total_price - (
                     self.item_price - updated_price
                 )
+                print("QQQQQQQQQQQQQQQQQQQQQQ",self.booking.total_price)
             else:
                 self.booking.total_price = self.booking.total_price + (
                     updated_price - self.item_price
                 )
+                print("wwwwwwwwwwwwwwwwwwwwwww",self.booking.total_price)
             self.booking.save()
+            print("xxxxxxxxxxxxxxxxxxxxxx",self.booking.total_price)
         super().save(*args, **kwargs)
 
 
