@@ -5,7 +5,11 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from tour_plan.models import Booking, BookingItem
 from tour_plan.permissions import IsAdmin
 from tour_plan.rest.filters.bookings import BookingFilter
-from tour_plan.rest.serializers.booking import BookingItemSerializer, BookingSerializer
+from tour_plan.rest.serializers.booking import (
+    BookingDetailsSerializer,
+    BookingItemSerializer,
+    BookingSerializer,
+)
 
 
 class BookingListCreateAPIView(ListCreateAPIView):
@@ -22,13 +26,13 @@ class BookingListCreateAPIView(ListCreateAPIView):
 
     def get_queryset(self):
         user_role = self.request.user.role
-        if user_role in ["ADMIN","SUPER_ADMIN"]:
+        if user_role in ["ADMIN", "SUPER_ADMIN"]:
             return Booking.objects.filter()
         return Booking.objects.filter(user=self.request.user)
 
 
 class BookingRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    serializer_class = BookingSerializer
+    serializer_class = BookingDetailsSerializer
     lookup_field = "id"
 
     def get_permissions(self):
@@ -38,7 +42,7 @@ class BookingRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         user_role = self.request.user.role
-        if user_role in ["ADMIN","SUPER_ADMIN"]:
+        if user_role in ["ADMIN", "SUPER_ADMIN"]:
             return Booking.objects.filter()
         return Booking.objects.filter(user=self.request.user)
 

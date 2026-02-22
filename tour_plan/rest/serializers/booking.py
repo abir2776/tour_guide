@@ -5,6 +5,7 @@ from rest_framework import serializers
 
 from core.models import GuestUser, User
 from tour_plan.models import Booking, BookingItem, CartItem, TimeSlot
+from tour_plan.rest.serializers.tour_plan import TourPlanSerializer
 from tour_plan.rest.serializers.tour_time import TimeSlotSerializer
 
 
@@ -232,3 +233,50 @@ class BookingSerializer(serializers.ModelSerializer):
                 booking.time_slot.save()
 
             return booking
+
+
+class BookingItemSerializerForBookinDetails(serializers.ModelSerializer):
+    time_slot = TimeSlotSerializer(read_only=True)
+    tour_plan = TourPlanSerializer(read_only=True)
+
+    class Meta:
+        model = BookingItem
+        fields = "__all__"
+        read_only_fields = ["id", "booking", "tour_plan", "time_slot"]
+
+
+class BookingDetailsSerializer(serializers.ModelSerializer):
+    items = serializers.SerializerMethodField()
+    cart_item_ids = serializers.ListField(
+        child=serializers.IntegerField(), write_only=True, required=False
+    )
+    full_name = serializers.CharField(write_only=True, required=False)
+    email = serializers.CharField(write_only=True, required=False)
+    country = serializers.CharField(write_only=True, required=False)
+    phone = serializers.CharField(write_only=True, required=False, allow_blank=True)
+    book_now = serializers.BooleanField(write_only=True, required=False)
+    single_item = BookingItemCreateSerializer(write_only=True, required=False)
+
+    class Meta:
+        model = Booking
+        fields = "__all__"
+        read_only_fields = ["id", "user", "total_price"]
+
+    def get_items(self, object):
+        items = BookingItem.objects.filter(booking=object)
+        return BookingItemSerializer(items, many=True).data
+
+    def validate(self, attrs):
+        status = attrs.get("status")
+        cancelled_reason = attrs.get("cancelled_reason")
+
+        if status == "cancelled" and (
+            not cancelled_reason or len(cancelled_reason) <= 0
+        ):
+            raise serializers.ValidationError(
+                {
+                    "cancelled_reason": "Cancelled reason is required when status is cancelled."
+                }
+            )
+
+        return attrs
