@@ -4,7 +4,7 @@ from django.db import transaction
 from rest_framework import serializers
 
 from core.models import GuestUser, User
-from tour_plan.models import Booking, BookingItem, CartItem
+from tour_plan.models import Booking, BookingItem, CartItem, TimeSlot
 from tour_plan.rest.serializers.tour_time import TimeSlotSerializer
 
 
@@ -15,6 +15,65 @@ class BookingItemSerializer(serializers.ModelSerializer):
         model = BookingItem
         fields = "__all__"
         read_only_fields = ["id", "booking"]
+
+    def validate(self, attrs):
+        instance = self.instance
+        if not instance:
+            return attrs
+        new_adults = attrs.get("num_adults", instance.num_adults)
+        new_children = attrs.get("num_children", instance.num_children)
+        new_infants = attrs.get("num_infants", instance.num_infants)
+        new_youth = attrs.get("num_youth", instance.num_youth)
+        new_student_eu = attrs.get("num_student_eu", instance.num_student_eu)
+        diff_adults = new_adults - instance.num_adults
+        diff_children = new_children - instance.num_children
+        diff_infants = new_infants - instance.num_infants
+        diff_youth = new_youth - instance.num_youth
+        diff_student_eu = new_student_eu - instance.num_student_eu
+
+        time_slot = instance.time_slot
+        if (
+            (diff_adults > 0 and time_slot.available_adults < diff_adults)
+            or (diff_children > 0 and time_slot.available_children < diff_children)
+            or (diff_infants > 0 and time_slot.available_infants < diff_infants)
+            or (diff_youth > 0 and time_slot.available_youth < diff_youth)
+            or (
+                diff_student_eu > 0 and time_slot.available_student_eu < diff_student_eu
+            )
+        ):
+            raise serializers.ValidationError(
+                "Not enough availability in selected time slot."
+            )
+
+        return attrs
+
+    def update(self, instance, validated_data):
+        with transaction.atomic():
+            time_slot = TimeSlot.objects.select_for_update().get(
+                id=instance.time_slot.id
+            )
+            new_adults = validated_data.get("num_adults", instance.num_adults)
+            new_children = validated_data.get("num_children", instance.num_children)
+            new_infants = validated_data.get("num_infants", instance.num_infants)
+            new_youth = validated_data.get("num_youth", instance.num_youth)
+            new_student_eu = validated_data.get(
+                "num_student_eu", instance.num_student_eu
+            )
+            diff_adults = new_adults - instance.num_adults
+            diff_children = new_children - instance.num_children
+            diff_infants = new_infants - instance.num_infants
+            diff_youth = new_youth - instance.num_youth
+            diff_student_eu = new_student_eu - instance.num_student_eu
+
+            time_slot.available_adults -= diff_adults
+            time_slot.available_children -= diff_children
+            time_slot.available_infants -= diff_infants
+            time_slot.available_youth -= diff_youth
+            time_slot.available_student_eu -= diff_student_eu
+
+            time_slot.save()
+
+            return super().update(instance, validated_data)
 
 
 class BookingItemCreateSerializer(serializers.ModelSerializer):
